@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Settings · GAM Inspector</title>
+    <link rel="icon" href="assets/images/icon-32.png" />
+    <link rel="stylesheet" href="assets/css/options.css" />
+  </head>
+  <body>
+    <header class="settings-topbar">
+      <a href="panel.html" class="settings-brand"
+        ><span class="mini-mark" data-icon="activity"></span>GAM <span>Request Inspector</span></a
+      ><span class="settings-label">WORKSPACE SETTINGS</span>
+    </header>
+    <main class="settings-main">
+      <div class="settings-heading">
+        <span class="eyebrow">MAKE IT YOURS</span>
+        <h1>A clearer view, your way.</h1>
+        <p>Fine-tune your inspector. Settings stay on this device.</p>
+      </div>
+      <form id="options-form">
+        <section class="settings-card" aria-labelledby="general-heading">
+          <div class="card-heading">
+            <span data-icon="settings"></span>
+            <div>
+              <h2 id="general-heading">General</h2>
+              <p>The essentials for your daily workflow.</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <label class="field"
+              >GAM network ID<input
+                name="networkId"
+                type="text"
+                pattern="[0-9]*"
+                inputmode="numeric"
+                maxlength="30"
+                placeholder="e.g. 1234567"
+              /><span class="help"
+                >Creates direct links to creatives, line items, orders, and advertisers in your network.</span
+              ></label
+            >
+            <label class="field"
+              >Appearance<select name="theme">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="system">Match system</option></select
+              ><span class="help">Choose the theme that fits your workspace.</span></label
+            >
+            <label class="field"
+              >Featured targeting keys<input
+                name="featuredTargetings"
+                type="text"
+                maxlength="2000"
+                placeholder="hb_bidder, hb_pb, amznbid"
+              /><span class="help"
+                >Comma-separated keys. Highlighted keys remain visible when targeting is hidden.</span
+              ></label
+            >
+            <label class="field"
+              >Request history limit<input
+                name="maxRequests"
+                type="number"
+                min="50"
+                max="2000"
+                step="1"
+                required
+              /><span class="help"
+                >Keep 50–2,000 recent requests. Older requests are removed automatically.</span
+              ></label
+            >
+          </div>
+          <label class="toggle-row"
+            ><span
+              ><strong>Preserve log on navigation</strong
+              ><span class="help">Keep captured requests when the inspected page changes.</span></span
+            ><input name="preserveLog" type="checkbox" role="switch"
+          /></label>
+        </section>
+
+        <section class="settings-card" aria-labelledby="privacy-heading">
+          <div class="card-heading">
+            <span data-icon="shield"></span>
+            <div>
+              <h2 id="privacy-heading">Display &amp; privacy</h2>
+              <p>Keep your stream focused on what matters.</p>
+            </div>
+          </div>
+          <div class="privacy-note">
+            <span data-icon="info"></span
+            ><span
+              >Consent strings and publisher IDs are hidden by default and omitted from JSON exports while hidden.
+              Targeting values can still contain sensitive data.</span
+            >
+          </div>
+          <div class="checkbox-grid">
+            <label><input name="hideGdprConsent" type="checkbox" />Hide consent strings</label>
+            <label><input name="hidePpid" type="checkbox" />Hide publisher IDs (PPID)</label>
+            <label><input name="hideGlobalTargetings" type="checkbox" />Hide page targeting</label>
+            <label><input name="hideSlotsTargetings" type="checkbox" />Hide slot targeting</label>
+            <label><input name="hideSlotsSizes" type="checkbox" />Hide slot sizes</label>
+            <label><input name="hideVideo" type="checkbox" />Hide video parameters</label>
+          </div>
+        </section>
+
+        <section class="settings-card" aria-labelledby="overlay-heading">
+          <div class="card-heading">
+            <span data-icon="layers"></span>
+            <div>
+              <h2 id="overlay-heading">Slot overlays</h2>
+              <p>Connect your requests to the actual ads on the page.</p>
+            </div>
+          </div>
+          <label class="toggle-row no-border"
+            ><span
+              ><strong>Show slot names and sizes on the page</strong
+              ><span class="help"
+                >Works with Google Publisher Tag. Only the sites you allow below can receive overlays.</span
+              ></span
+            ><input name="showOverlay" type="checkbox" role="switch"
+          /></label>
+          <div class="site-access">
+            <label for="overlay-site">Allow a site</label>
+            <div class="site-access-input">
+              <input
+                id="overlay-site"
+                type="url"
+                form="site-permission-form"
+                placeholder="https://example.com"
+                aria-describedby="site-help"
+              /><button class="button secondary" id="grant-site" type="button">Grant access</button>
+            </div>
+            <p class="help" id="site-help">
+              Chrome requests optional script access for this host. Other hosts remain inaccessible.
+            </p>
+            <p class="help" id="site-empty">No sites allowed yet. Request inspection works without site access.</p>
+            <ul id="allowed-sites"></ul>
+          </div>
+        </section>
+
+        <section class="settings-card" aria-labelledby="bidding-heading">
+          <div class="card-heading">
+            <span data-icon="activity"></span>
+            <div>
+              <h2 id="bidding-heading">Advertisers &amp; bidding</h2>
+              <p>Make campaign IDs and header bidding easier to read.</p>
+            </div>
+          </div>
+          <label class="toggle-row no-border"
+            ><span
+              ><strong>Read additional response details</strong
+              ><span class="help"
+                >Extract winning advertiser, order, and size from supported responses. Adds response parsing work.</span
+              ></span
+            ><input name="captureAdditionalInformation" type="checkbox" role="switch"
+          /></label>
+          <label class="field"
+            >Starred advertisers<textarea
+              name="advertisersJson"
+              spellcheck="false"
+              maxlength="200000"
+              placeholder='{"123":"prebid","456":"amazon"}'
+            ></textarea
+            ><span class="help"
+              >JSON object mapping advertiser IDs to names, such as {"123":"prebid","456":"amazon"}.</span
+            ></label
+          >
+          <div class="form-grid map-fields">
+            <label class="field"
+              >Amazon bid prices<textarea
+                name="amazonBidsJson"
+                spellcheck="false"
+                maxlength="200000"
+                placeholder='{"abc":0.1,"xyz":0.2}'
+              ></textarea
+              ><span class="help">Map bid codes to numeric prices. Zero is a valid price.</span></label
+            ><label class="field"
+              >Amazon bidder names<textarea
+                name="amazonBiddersJson"
+                spellcheck="false"
+                maxlength="200000"
+                placeholder='{"abc":"Bidder name"}'
+              ></textarea
+              ><span class="help">Map Amazon bidder IDs to readable names.</span></label
+            >
+          </div>
+        </section>
+        <div class="save-bar">
+          <span id="save-status" role="status" aria-live="polite">Changes apply to open inspector panels.</span
+          ><button type="submit" class="button primary" id="save"><span data-icon="check"></span>Save settings</button>
+        </div>
+      </form>
+      <footer class="settings-footer">
+        <span data-icon="shield"></span>Local settings. Local analysis. No telemetry.
+      </footer>
+    </main>
+    <script src="assets/js/options.js" type="module"></script>
+  </body>
+</html>

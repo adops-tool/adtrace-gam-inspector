@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>GAM · Request Inspector</title>
+    <link rel="icon" href="assets/images/icon-32.png" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <aside class="rail" aria-label="Workspace">
+      <a class="brand-mark" href="panel.html" aria-label="GAM Inspector home"
+        ><span></span><span></span><span></span
+      ></a>
+      <div class="rail-divider"></div>
+      <span
+        class="rail-item active"
+        title="Request inspector"
+        aria-label="Request inspector"
+        data-icon="activity"
+      ></span>
+      <div class="rail-bottom">
+        <button
+          class="rail-item"
+          id="theme"
+          type="button"
+          title="Toggle light / dark theme"
+          aria-label="Toggle light / dark theme"
+          data-icon="moon"
+        ></button>
+        <button
+          class="rail-item"
+          type="button"
+          data-action="options"
+          title="Settings"
+          aria-label="Settings"
+          data-icon="settings"
+        ></button>
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <div class="product-name">GAM<span class="product-divider"></span><span>Request Inspector</span></div>
+        <div class="connection-status" id="connection-status">
+          <span class="status-dot"></span><span id="connection-label">DevTools connected</span>
+        </div>
+      </header>
+      <main>
+        <section class="overview" aria-labelledby="page-title">
+          <div class="overview-copy">
+            <div class="eyebrow"><span class="eyebrow-line"></span> YOUR AD STACK, IN FOCUS</div>
+            <h1 id="page-title">Every request.<br /><span>Clearer insight.</span></h1>
+            <p>A little clarity for your ad operations.<br />Inspect delivery, targeting, and privacy in one place.</p>
+            <span class="page-pill"
+              ><span data-icon="globe"></span><span id="page-location">Waiting for page activity</span></span
+            >
+          </div>
+          <div class="overview-art">
+            <img
+              src="assets/images/request-inspector.webp"
+              width="1120"
+              height="560"
+              alt="Ad cards connected to a mint glass inspection lens"
+            />
+          </div>
+        </section>
+
+        <section class="stats-grid" aria-label="Session statistics">
+          <div class="stat-card">
+            <div class="stat-label">Requests <span data-icon="activity"></span></div>
+            <strong id="stat-requests">0</strong><span class="stat-note">Captured this session</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Ad slots <span data-icon="layers"></span></div>
+            <strong id="stat-slots">0</strong><span class="stat-note">Across captured requests</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Fill rate <span data-icon="check"></span></div>
+            <strong id="stat-fill">—</strong><span class="stat-note" id="fill-detail">0 filled · 0 unfilled</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg. response <span data-icon="clock"></span></div>
+            <strong id="stat-latency">—</strong><span class="stat-note">Network request duration</span>
+          </div>
+        </section>
+
+        <section class="stream" aria-labelledby="stream-title">
+          <div class="stream-header">
+            <div class="stream-title">
+              <h2 id="stream-title">Request stream</h2>
+              <span class="capture-status" id="capture-status"
+                ><span class="status-dot"></span><span id="capture-label">Listening for requests</span></span
+              >
+            </div>
+            <div class="stream-actions">
+              <button type="button" class="button secondary" id="pause" aria-pressed="false">
+                <span data-icon="pause"></span><span>Pause</span>
+              </button>
+              <button type="button" class="button secondary" id="clear" disabled>
+                <span data-icon="trash"></span><span>Clear</span>
+              </button>
+              <button type="button" class="button primary" id="export" disabled>
+                <span data-icon="download"></span><span>Export JSON</span>
+              </button>
+            </div>
+          </div>
+          <div class="stream-toolbar">
+            <form id="adunitFilter" class="search-box" role="search">
+              <span data-icon="search"></span>
+              <input
+                id="search"
+                type="search"
+                placeholder="Search ad units, targeting, IDs…"
+                aria-label="Search ad units, targeting, sizes, and IDs"
+                autocomplete="off"
+                maxlength="500"
+              />
+              <kbd>Ctrl K</kbd>
+            </form>
+            <label class="preserve-toggle"><input id="preserve-log" type="checkbox" />Preserve log</label>
+            <button
+              class="icon-button"
+              type="button"
+              data-action="options"
+              title="Inspector settings"
+              aria-label="Inspector settings"
+              data-icon="settings"
+            ></button>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-tabs" role="group" aria-label="Filter slots">
+              <button type="button" data-filter="all" aria-pressed="true">All requests</button>
+              <button type="button" data-filter="filled" aria-pressed="false">
+                <span class="filter-dot green"></span>Filled
+              </button>
+              <button type="button" data-filter="unfilled" aria-pressed="false">
+                <span class="filter-dot amber"></span>Unfilled
+              </button>
+              <button type="button" data-filter="video" aria-pressed="false">Video</button>
+              <button type="button" data-filter="privacy" aria-pressed="false">Privacy signals</button>
+            </div>
+            <span class="filter-status" id="filter-status" role="status">0 requests · 0 slots</span>
+          </div>
+          <div id="content" aria-label="Captured requests"></div>
+          <div class="empty-state" id="empty-state">
+            <div class="empty-symbol" data-icon="activity"></div>
+            <span class="eyebrow">A CLEAR VIEW STARTS HERE</span>
+            <h3 id="empty-title">Ready when your ads are</h3>
+            <p>
+              Reload the inspected page or trigger an ad request.<br />Your Google Ad Manager requests will appear here,
+              live.
+            </p>
+            <div class="empty-hint"><span data-icon="info"></span>Keep DevTools open while inspecting your page</div>
+          </div>
+          <div class="no-results" id="no-results" hidden>
+            <span data-icon="search"></span>
+            <h3>No matching slots</h3>
+            <p>Try another search or clear your filters.</p>
+            <button class="button secondary" type="button" id="reset-filters">Reset filters</button>
+          </div>
+          <div class="stream-footer">
+            <span><span class="local-dot"></span>Processed locally. No telemetry.</span
+            ><span id="history-limit">Last 250 requests</span>
+          </div>
+        </section>
+        <footer class="workspace-footer">
+          <span>Built for the details that matter.</span
+          ><span>GAM Inspector <span class="version-label">v0.1.0</span></span>
+        </footer>
+      </main>
+    </div>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <script src="assets/js/app.js" type="module"></script>
+  </body>
+</html>
